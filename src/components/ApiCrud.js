@@ -2,7 +2,7 @@ import React,{useEffect, useState} from "react";
 import { helpHttp } from "../Helpers/helphttp";
 import AplicacionCrudForm from "./AplicacionCrudForm";
 import AplicacionCrudTable from "./AplicacionCrudTable";
-import MessageApi from "./MessageApi";
+
 
 const ApiCrud = () => {
     const [db,setDb] = useState([]);
@@ -10,36 +10,37 @@ const ApiCrud = () => {
     const [dataToEdit,setDataToEdit] = useState(null);
 
     const [error,setError] = useState(null);
-    //si es null, va a ser una insercion, sino es una edicion
+   
     const [loading, setLoading] = useState(false);
 
-    let api=helpHttp();
-    let url= "http://localhost:5000/equipos";
+    let api= helpHttp(); //invoca al helper para Simplificar el llamado.
+    let url= "http://localhost:5000/equipos"; //define el endpoint
 
-    //mostamos la respuesta en la UI
+    //se manda la respuesta a la interfaz
+    //se llama al metodo GET del servicio/helper creado
+    //la variable setLoading se inicializa en true para visualizar  al terminar el GET cambia a false
+    
     useEffect(()=>{
-        //actualiza la variable setLoading a true para que se pueda visualizar
+        
             setLoading(true);
-        //usamos el metodo GET del Helper
+         
             helpHttp().get(url).then((res)=>{
-        //cuando la respuesta no tenga una propiedad llamada error, actualizará la variable db con la respuesta arrojada por la petición
+        
                 if(!res.err){
                     setDb(res)
-        //si no hubo error, la variable de error se actualiza a null
+        
                     setError(null);
                 }else{
-        //en cambio, si hubo un error la base de datos no cargará la información
                     setDb(null);
                     setError(res)
                 }
-        //al finalizar la promesa de la peticion GET vuelve a falso
-            setLoading(false);
+                    setLoading(false);
             });
             },[url]);
     
 
     const createData =(data)=>{
-        data.id= Date.now(); //para crear un id en el campo
+        data.id= Date.now(); 
         let options={
             body:data,
             headers:{"content-type":"application/json"},
@@ -53,7 +54,7 @@ const ApiCrud = () => {
             }
         });
         
-        //trae la base de datos como esta
+        //trae la base de datos inicial
 
     };
     const updateData =(data)=>{
@@ -75,15 +76,13 @@ const ApiCrud = () => {
             }
             
         });
-        //trae la base de datos como esta
+        
 
     };
-    // let newData= db.map(el=>el.id ===dato.id? data:el);
-    // setDb(newData);
-
+  
 
     const deleteData = (id) => {
-      let isDelete = window.confirm(`¿Estás seguro de eliminar el registro con el id '${id}'?`);
+      let isDelete = window.confirm(`¿Estás seguro de eliminar el equipo con el id '${id}'?`);
       if (isDelete) {
           let endpoint = `${url}/${id}`;
           let options = {
@@ -91,7 +90,7 @@ const ApiCrud = () => {
         };
   
         api.del(endpoint, options).then((res) => {
-          //console.log(res);
+          
           if (!res.err) {
             let newData = db.filter((el) => el.id !== id);
             setDb(newData);
@@ -103,21 +102,10 @@ const ApiCrud = () => {
         return;
       }
     };
-//     const deleteData = (id) => {
-//         let isDelete = window.confirm(
-//       `¿Estás seguro de eliminar el registro con el id '${id}'?`
-//     );
 
-//     if (isDelete) {
-//       let newData = db.filter((el)=>el.id!==id);
-//       setDb(newData);
-//       }else{
-//         return;
-//     };
-//   }
     return(
         <div>
-            <h2> CRUD API </h2>
+            <h2> INFO DE LOS QUIPOS DE FÚBOL MAS FAMOSOS</h2>
             <AplicacionCrudForm
             createData = {createData}
             updateData = {updateData}
@@ -125,11 +113,11 @@ const ApiCrud = () => {
             setDataToEdit={setDataToEdit}
             />
             {loading} 
-            {error&& <MessageApi/>}
+            {error}
             <AplicacionCrudTable
             data={db}
-            deleteData={deleteData}//funcion que actualiza la variable, deleteData
-            setDataToEdit={setDataToEdit}//funcion que actualiza la variable, setDataToEdit
+            deleteData={deleteData}
+            setDataToEdit={setDataToEdit}
             />
 
         </div>

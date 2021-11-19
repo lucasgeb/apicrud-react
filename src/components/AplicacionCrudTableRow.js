@@ -1,6 +1,6 @@
 import React from "react";
 
-const AplicacionCrudTableRow = ({el, setDataToEdit,deleteData})=>{//destructuracion del obejeto
+const AplicacionCrudTableRow = ({el, setDataToEdit,deleteData})=>{
 
     let {equipo,colores,fundacion,origen,id} = el;
         return(

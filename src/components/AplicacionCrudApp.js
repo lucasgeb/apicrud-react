@@ -25,7 +25,7 @@ const AplicacionCrudApp = () => {
     const [db,setDb] = useState(inicialDb);
     
     const [dataToEdit, setDataToEdit] = useState(null);
-    //si es null, va a ser la insercion, sino es una edicion
+    
     
     const createData =(data)=>{    
         
@@ -58,8 +58,8 @@ const AplicacionCrudApp = () => {
             />
             <AplicacionCrudTable
             data={db}
-            deleteData={deleteData} //funcion que actualiza la variable
-            setDataToEdit={setDataToEdit} //funcion que actualiza la variable
+            deleteData={deleteData} 
+            setDataToEdit={setDataToEdit} 
             />
         </div>
     )
